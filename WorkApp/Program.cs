@@ -7,6 +7,7 @@ using Application.Services;
 using Application.Services.Auth;
 using Application.Services.GenericServices;
 using Domain.Account;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
