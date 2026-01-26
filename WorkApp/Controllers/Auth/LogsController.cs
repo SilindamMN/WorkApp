@@ -19,8 +19,9 @@
     }
 
     [HttpGet]
-    [Authorize(Roles = StaticUserRoles.OwnerAdmin)]
-    public async Task<ActionResult<IEnumerable<GetLogDto>>> GetLogs()
+        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+
+        public async Task<ActionResult<IEnumerable<GetLogDto>>> GetLogs()
     {
       var logs = await logService.getLogsAsync();
       return Ok(logs);
@@ -28,8 +29,9 @@
 
     [HttpGet]
     [Route("mine")]
-    [Authorize]
-    public async Task<ActionResult<IEnumerable<GetLogDto>>> GetMyLogs()
+
+        [Authorize(Roles = StaticUserRoles.USER)]
+        public async Task<ActionResult<IEnumerable<GetLogDto>>> GetMyLogs()
     {
       var logs = await logService.getMyLogsAsync(User);
       return Ok(logs);

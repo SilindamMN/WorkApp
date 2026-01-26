@@ -1,4 +1,4 @@
-namespace Application.Interfaces
+namespace Application.Interfaces.Core
 {
   using Domain.Dtos.Account;
   using Domain.Dtos.General;

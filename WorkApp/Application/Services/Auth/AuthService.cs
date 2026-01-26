@@ -3,7 +3,8 @@
   using Application.Helpers;
   using Application.Interfaces;
   using Application.Interfaces.Auth;
-  using Domain.Account;
+    using Application.Interfaces.Core;
+    using Domain.Account;
   using Domain.Constants;
   using Domain.Dtos.Account;
   using Domain.Dtos.General;

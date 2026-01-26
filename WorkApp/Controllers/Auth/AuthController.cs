@@ -2,7 +2,8 @@
 {
   using Application.Interfaces;
   using Application.Interfaces.Auth;
-  using Application.Services.Auth;
+    using Application.Interfaces.Core;
+    using Application.Services.Auth;
   using Domain.Constants;
   using Domain.Dtos.Account;
   using Domain.Dtos.General;
@@ -26,6 +27,7 @@
 
     [HttpGet]
     [Route("jobtitle/{username}")]
+    [Authorize]
     public async Task<ActionResult<JobTitleDto>> GetJobTitleByUsername([FromRoute] string username)
     {
       var user = await userJobTitleService.GetJobTitleForUser(username);
@@ -41,7 +43,9 @@
 
     [HttpPost]
     [Route("seed-roles")]
-    public async Task<IActionResult> SeedRoles()
+
+        [Authorize]
+        public async Task<IActionResult> SeedRoles()
     {
       var seedResults = await authService.SeedRolesAsync();
       return StatusCode(seedResults.StatusCode, seedResults.Message);
@@ -72,8 +76,8 @@
 
     [HttpPost]
     [Route("UpdateRoles")]
-    //[Authorize(Roles =StaticUserRoles.OwnerAdmin)]
-    public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDto updateRoleDto)
+        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.OwnerAdminManagerUser)]
+        public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDto updateRoleDto)
     {
       var updateRoleResult = await authService.UpdateRoleAsync(User, updateRoleDto);
       if (updateRoleResult.IsSucceed)
@@ -88,7 +92,9 @@
 
     [HttpPost]
     [Route("me")]
-    public async Task<ActionResult<LoginServiceResponseDto>> Me([FromBody] MeDto token)
+        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.USER)]
+
+        public async Task<ActionResult<LoginServiceResponseDto>> Me([FromBody] MeDto token)
     {
       try
       {
@@ -110,7 +116,9 @@
 
     [HttpGet]
     [Route("users")]
-    public async Task<ActionResult<IEnumerable<UserInfoResult>>> GetUsersList()
+        [Authorize(Roles = StaticUserRoles.USER)]
+
+        public async Task<ActionResult<IEnumerable<UserInfoResult>>> GetUsersList()
     {
       var userList = await authService.GetUserListAsync();
       return Ok(userList);
@@ -133,7 +141,9 @@
 
     [HttpGet]
     [Route("userDetails/{username}")]
-    public async Task<ActionResult<UserDetailsDto>> GetUserExtraDetailsByUsername([FromRoute] string username)
+
+        [Authorize(Roles = StaticUserRoles.USER)]
+        public async Task<ActionResult<UserDetailsDto>> GetUserExtraDetailsByUsername([FromRoute] string username)
     {
       var user = await authService.GetUserExtraDetailsByUserNameAsync(username);
       if (user is not null)
@@ -147,7 +157,9 @@
     }
     [HttpGet]
     [Route("usernames")]
-    public async Task<ActionResult<IEnumerable<string>>> GetUsernameList()
+
+        [Authorize(Roles = StaticUserRoles.USER)]
+        public async Task<ActionResult<IEnumerable<string>>> GetUsernameList()
     {
       var usernames = await authService.GetUsernamesListAsync();
       return Ok(usernames);
@@ -155,7 +167,9 @@
 
     [HttpPost]
     [Route("update")]
-    public async Task<ActionResult<GeneralServiceResponseDto>> UpdateUserDetails(string updateUsername, [FromBody] UpdateUserDetailsDto userDetailsDto)
+        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.OwnerAdminManagerUser)]
+
+        public async Task<ActionResult<GeneralServiceResponseDto>> UpdateUserDetails(string updateUsername, [FromBody] UpdateUserDetailsDto userDetailsDto)
     {
       try
       {

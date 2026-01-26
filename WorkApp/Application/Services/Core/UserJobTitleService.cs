@@ -1,9 +1,10 @@
-﻿namespace Application.Services
+﻿namespace Application.Services.Core
 {
   using Application.Helpers;
   using Application.Interfaces;
   using Application.Interfaces.Auth;
-  using Application.Interfaces.GenericInterfaces;
+    using Application.Interfaces.Core;
+    using Application.Interfaces.GenericInterfaces;
   using Domain.Account;
   using Domain.Dtos.General;
   using Domain.Dtos.JobTitles;

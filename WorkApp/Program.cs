@@ -1,10 +1,12 @@
 using Application;
 using Application.Interfaces;
 using Application.Interfaces.Auth;
+using Application.Interfaces.Core;
 using Application.Interfaces.GenericInterfaces;
 using Application.Mappings;
 using Application.Services;
 using Application.Services.Auth;
+using Application.Services.Core;
 using Application.Services.GenericServices;
 using Domain.Account;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -20,8 +20,9 @@
     }
 
     [HttpPost]
-    [Authorize]
-    [Route("Create")]
+
+        [Authorize(Roles = StaticUserRoles.USER)]
+        [Route("Create")]
     public async Task<IActionResult> CreateNewMessage([FromBody] CreateMessageDto createMessageDto)
     {
       var result = await messageService.CreateNewMessageAsync(User, createMessageDto);
@@ -34,16 +35,17 @@
 
     [HttpGet]
     [Route("mine")]
-    [Authorize]
-    public async Task<ActionResult<IEnumerable<GetMessageDto>>> GetMyMessage()
+        [Authorize(Roles = StaticUserRoles.USER)]
+        public async Task<ActionResult<IEnumerable<GetMessageDto>>> GetMyMessage()
     {
       var messages = await messageService.GetMyMessageAsync(User);
       return Ok(messages);
     }
 
     [HttpGet]
-    [Authorize(Roles = StaticUserRoles.OwnerAdmin)]
-    public async Task<ActionResult<IEnumerable<GetMessageDto>>> GetMessages()
+        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+
+        public async Task<ActionResult<IEnumerable<GetMessageDto>>> GetMessages()
     {
       var messages = await messageService.GetMessagesAsync();
       return Ok(messages);

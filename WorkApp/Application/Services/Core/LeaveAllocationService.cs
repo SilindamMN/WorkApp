@@ -1,9 +1,10 @@
-﻿namespace Application.Services
+﻿namespace Application.Services.Core
 {
   using Application.Helpers;
   using Application.Interfaces;
   using Application.Interfaces.Auth;
-  using AutoMapper;
+    using Application.Interfaces.Core;
+    using AutoMapper;
   using Domain.Dtos;
   using Domain.Dtos.General;
   using Domain.Dtos.LeaveAllocation;
