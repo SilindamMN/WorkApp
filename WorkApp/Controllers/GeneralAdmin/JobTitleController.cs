@@ -113,7 +113,7 @@ public class JobTitleController : ControllerBase
     }
 
     [HttpPost("AssignJobTitle")]
-    [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN + "," + StaticUserRoles.OwnerAdminManagerUser)]
+   [Authorize(Roles = StaticUserRoles.ADMIN)]
     public async Task<IActionResult> AssignJobTitleToUser([FromBody] AssignJobTitleDto request)
     {
         var result = await userJobTitleService.AssignJobTitleToUser(request); if (result.IsSucceed)

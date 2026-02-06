@@ -25,7 +25,7 @@
 
     [HttpGet]
     [Route("LeaveAllocationByUsereName")]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.OwnerAdminManagerUser + "," + StaticUserRoles.ADMIN + "," +StaticUserRoles.OwnerAdminManager)]
+       [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<ActionResult<IEnumerable<EmployeeLeaveAllocationDto>>> GetUserAllocationByUserNamesync(string userName)
     {
       var allocations = await leaveAllocationService.GetLeaveAllocationsByUsername(userName);
@@ -40,7 +40,7 @@
 
     [HttpGet]
     [Route("LeaveAllocationByLeaveName")]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.USER + "," + StaticUserRoles.ADMIN + "," +StaticUserRoles.ADMIN)]
+        [Authorize(Roles = StaticUserRoles.ADMIN + "," + StaticUserRoles.USER + "," + StaticUserRoles.ADMIN + "," +StaticUserRoles.ADMIN)]
         public async Task<ActionResult<IEnumerable<LeaveAllocationDto>>> GetUserAllocationByLeaveNamesync(string Leavename)
     {
       var allocations = await leaveAllocationService.GetLeaveAllocationsByLeaveType(Leavename);
@@ -55,7 +55,7 @@
 
     [HttpGet]
     [Route("MyLeaveAllocations")]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.USER + "," + StaticUserRoles.ADMIN)]
+       [Authorize(Roles = StaticUserRoles.ADMIN)]
 
         public async Task<ActionResult<IEnumerable<EmployeeLeaveAllocationDto>>> GetMyAllocationsync()
     {

@@ -19,7 +19,7 @@
     }
 
     [HttpGet]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+       [Authorize(Roles = StaticUserRoles.ADMIN)]
 
         public async Task<ActionResult<IEnumerable<GetLogDto>>> GetLogs()
     {

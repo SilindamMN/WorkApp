@@ -52,7 +52,7 @@
     }
 
     [HttpPost]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+        [Authorize( StaticUserRoles.ADMIN)]
         public async Task<IActionResult> CreateTeam([FromBody] TeamDto teamDto)
     {
       var result = await teamInterface.CreateTeam(teamDto);
@@ -64,7 +64,7 @@
     }
 
     [HttpPut("{id}")]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+       [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> UpdateTeam(int id, [FromBody] TeamDto updateTeamDto)
     {
       var result = await _teamService.UpdateAsync(id, updateTeamDto);
@@ -76,7 +76,7 @@
     }
 
     [HttpDelete("{id}")]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+       [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> SoftDeleteTeam(int id)
     {
       var result = await _teamService.SoftDelete(id);
@@ -88,7 +88,7 @@
     }
 
     [HttpDelete("{id}/undo")]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+       [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> UnSoftDeleteTeam(int id)
     {
       var result = await _teamService.UndoSoftDeleteAsync(id);
@@ -100,7 +100,7 @@
     }
 
     [HttpPost("add-member")]
-        [Authorize(Roles = StaticUserRoles.OwnerAdmin + "," + StaticUserRoles.ADMIN)]
+       [Authorize(Roles = StaticUserRoles.ADMIN)]
     public async Task<IActionResult> AddTeamMember(string username, int teamId)
     {
       var response = await teamInterface.UpdateTeamMembership(username, teamId);
@@ -108,7 +108,7 @@
     }
 
     [HttpPost("remove-member")]
-        [Authorize(Roles = StaticUserRoles.USER)]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
 
         public async Task<IActionResult> RemoveTeamMember(string username)
     {
