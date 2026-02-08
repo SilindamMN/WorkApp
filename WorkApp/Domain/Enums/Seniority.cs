@@ -11,6 +11,7 @@
     Junior,
     Mid,
     Senior,
-    Lead
+    Lead,
+    Management
   }
 }
