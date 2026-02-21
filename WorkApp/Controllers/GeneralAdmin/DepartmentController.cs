@@ -85,7 +85,7 @@ namespace API.Controllers.GeneralAdmin
             return StatusCode(result.StatusCode, result.Message);
         }
 
-        [HttpPut("UpdateDepartment/{id}")]
+        [HttpPatch("UpdateDepartment/{id}")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> UpdateDepartment(int id, [FromBody] UpdateDepartmentDto updateDepartmentDto)
         {

@@ -102,7 +102,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("UpdateLeaveRequest")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> UpdateLeaveRequest(int leaveRequestId, [FromBody] UpdateLeaveRequestDto updateLeaveRequestDto)
@@ -154,7 +154,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("deleteLeaveRequest")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> DeleteLeaveRequest(int leaveRequestId)

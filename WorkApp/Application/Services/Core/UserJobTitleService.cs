@@ -41,26 +41,22 @@
       throw new NotImplementedException();
     }
 
-    public async Task<JobTitleDto> GetJobTitleForUser(string username)
-    {
-      var user = await dataContext.Users.SingleAsync(u => u.UserName == username);
+        public async Task<JobTitleDto?> GetJobTitleForUser(string username)
+        {
+            var user = await dataContext.Users.SingleAsync(u => u.UserName == username);
 
-      // Check if JobTitleId is null before calling GetJobTitleInfo
-      if (user.JobTitleId.HasValue)
-      {
-        var jobTitleInfo = await GetJobTitleInfo(user.JobTitleId.Value);
-        return jobTitleInfo;
-      }
-      else
-      {
-        // Handle the case where JobTitleId is null
-        // For example, return a default JobTitleDto or throw an exception
-        throw new Exception("JobTitleId is null for the user.");
-      }
-    }
+            if (user.JobTitleId.HasValue)
+            {
+                return await GetJobTitleInfo(user.JobTitleId.Value);
+            }
 
-    //will get the jobTitle including department name
-    private async Task<JobTitleDto> GetJobTitleInfo(int jobTitleId)
+            // No job title assigned
+            return null;
+        }
+
+
+        //will get the jobTitle including department name
+        private async Task<JobTitleDto> GetJobTitleInfo(int jobTitleId)
     {
       return await (from jobTitle in dataContext.JobTitles
                     join department in dataContext.Departments on jobTitle.DepartmentId equals department.Id

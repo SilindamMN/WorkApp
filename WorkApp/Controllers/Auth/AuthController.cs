@@ -73,7 +73,7 @@
             return Ok(loginResult);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpdateRoles")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDto updateRoleDto)
@@ -138,7 +138,7 @@
 
         [HttpGet]
         [Route("userDetails/{username}")]
-        [Authorize(Roles = StaticUserRoles.USER)]
+       // [Authorize(Roles = StaticUserRoles.USER)]
         public async Task<ActionResult<UserDetailsDto>> GetUserExtraDetailsByUsername([FromRoute] string username)
         {
             var user = await authService.GetUserExtraDetailsByUserNameAsync(username);
@@ -161,7 +161,7 @@
             return Ok(usernames);
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("update")]
         [Authorize(Roles = StaticUserRoles.ADMIN + "," +  StaticUserRoles.USER)]
         public async Task<ActionResult<GeneralServiceResponseDto>> UpdateUserDetails(string updateUsername, [FromBody] UpdateUserDetailsDto userDetailsDto)

@@ -281,9 +281,9 @@
                 LineManager = user.LineManager,
                 Salary = user.Salary,
                 Department = details.DepartmentName,
-                JobTitle = details.Title,
-                PhoneNumber = user.PhoneNumber,
-                Gender = (Gender)user.Gender
+                JobTitle = details?.Title ?? "Not Assigned",
+                PhoneNumber = user?.PhoneNumber,
+                Gender = user.Gender
             };
         }
 

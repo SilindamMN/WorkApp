@@ -63,7 +63,7 @@ public class JobTitleController : ControllerBase
         return StatusCode(result.StatusCode, result.Message);
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     [Authorize(Roles = StaticUserRoles.ADMIN)]
     public async Task<IActionResult> UpdateJobTitle(int id, [FromBody] UpdateCreateJobTitleDto updateJobTitleDto)
     {

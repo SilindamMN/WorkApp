@@ -68,7 +68,7 @@
             return StatusCode(result.StatusCode, result.Message);
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
        [Authorize(Roles = StaticUserRoles.ADMIN)]
 
         public async Task<IActionResult> UpdateClient(int id, [FromBody] ClientDto updateClientDto)

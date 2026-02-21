@@ -43,7 +43,7 @@ namespace API.Controllers.Products
         }
 
         // PUT: /api/Product/{id}
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] FakeStoreProductDto dto)
         {
             if (dto == null) return BadRequest("Product data is required.");

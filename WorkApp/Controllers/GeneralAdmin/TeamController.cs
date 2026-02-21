@@ -63,7 +63,7 @@
       return StatusCode(result.StatusCode, result.Message);
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
        [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> UpdateTeam(int id, [FromBody] TeamDto updateTeamDto)
     {
