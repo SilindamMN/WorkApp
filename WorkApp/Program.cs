@@ -49,7 +49,7 @@ builder.Services.AddScoped<ITimesheetService, TimesheetService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ITeamInterface, TeamService>();
 builder.Services.AddScoped<ILogService, LogService>();
-builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 builder.Services.AddHttpClient();
 
