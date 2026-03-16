@@ -88,6 +88,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
+//  Pirate wont win league.
+  
+
 // Identity configuration
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<DataContext>()
