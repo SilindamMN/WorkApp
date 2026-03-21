@@ -23,7 +23,7 @@
 
     public TeamService(DataContext dataContext, UserManager<ApplicationUser> userManager)
     {
-      this.dataContext = dataContext;
+      this.dataContext = dataContext; 
       this.userManager = userManager;
     }
 
@@ -92,7 +92,7 @@
     public async Task<IEnumerable<TeamMemberDetailsDto>> GetAllTeamsWithMembersAsync()
     {
       try
-      {
+       {
         var teamsWithMembers = await (from ut in dataContext.UserTeams
                                       join u in dataContext.Users on ut.UserId equals u.Id
                                       join t in dataContext.Teams on ut.TeamId equals t.Id
@@ -100,13 +100,15 @@
                                       from jt in dataContext.JobTitles.DefaultIfEmpty()
                                       select new
                                       {
+                                        Id = t.Id,
                                         TeamName = t.TeamName,
                                         TeamLeader = t.TeamLeader,
                                         Member = new MemberDetails
                                         {
                                           FirstName = u.FirstName,
                                           LastName = u.LastName,
-                                          JobTitle = jt.Title
+                                          JobTitle = jt.Title,
+                                          UserName = u.UserName
                                         }
                                       }).ToListAsync();
 

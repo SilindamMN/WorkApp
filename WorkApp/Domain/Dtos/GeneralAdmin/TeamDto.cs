@@ -9,7 +9,8 @@
 
   public class TeamDto
   {
-    public string TeamName { get; set; }
+        public int Id { get; set; }
+        public string TeamName { get; set; }
     public string TeamLeader { get; set; }
     public string Description { get; set; }
   }
