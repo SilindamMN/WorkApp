@@ -20,7 +20,10 @@
                           where p.ClientId == clientId
                           select new ClientDetailDto
                           {
-                            ProjectName = p.ProjectName
+                              ProjectId = p.Id,
+                            ProjectName = p.ProjectName,
+                            ProjectStartDate = p.StartDate
+                            
                           }).ToList();
       return projectNames;
     }
