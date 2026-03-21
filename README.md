@@ -5,4 +5,5 @@ Please update the response to include the `Id` for each job title without affect
 4. Teams Should return with Id
 5. Project,client , team must have category based on the department
 6. get teams have id
+7. get team with details include username
    
