@@ -63,7 +63,8 @@
                     where jobTitle.Id == jobTitleId
                     select new JobTitleDto
                     {
-                      Title = jobTitle.Title,
+                        Id = jobTitle.Id,
+                        Title = jobTitle.Title,
                       DepartmentName = department.DepartmentName,
                       Seniority = jobTitle.Seniority.ToString() // Assuming Seniority is an enum
                     }).FirstOrDefaultAsync();
@@ -76,6 +77,7 @@
       .Include(jt => jt.Department)
       .Select(jt => new JobTitleDto
       {
+          Id = jt.Id,
         Title = jt.Title,
         DepartmentName = jt.Department.DepartmentName,
         Description = jt.Description,
