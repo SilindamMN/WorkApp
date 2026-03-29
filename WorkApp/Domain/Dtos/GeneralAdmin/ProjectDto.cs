@@ -8,7 +8,8 @@
 
   public class ProjectDto
   {
-    public string ProjectName { get; set; }
+        public int Id { get; set; }
+        public string ProjectName { get; set; }
     public string ClientName { get; set; }
     public string TeamName { get; set; }
     public string Description { get; set; }
