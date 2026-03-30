@@ -31,7 +31,7 @@
         [Authorize(Roles = StaticUserRoles.USER)]
         public async Task<IActionResult> GetAllProjects()
         {
-            var result = await _projectService.GetAllAsync();
+            var result = await project.GetAllProjectsWithClientsAsync();
             return Ok(result);
         }
 
@@ -42,7 +42,7 @@
         [Authorize(Roles = StaticUserRoles.USER)]
         public async Task<IActionResult> GetProjectById(int id)
         {
-            var result = await _projectService.GetByIdAsync(id);
+            var result = await project.GetProjectByIdAsync(id);
 
             if (result is null)
                 return NotFound("Project not found.");

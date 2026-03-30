@@ -127,6 +127,7 @@
                       join team in dataContext.Teams on project.TeamId equals team.Id
                       select new ProjectDto
                       {
+                        Id = project.Id,
                         ProjectName = project.ProjectName,
                         Description = project.Description,
                         StartDate = project.StartDate,
@@ -160,5 +161,11 @@
     {
       throw new NotImplementedException();
     }
-  }
+        public async Task<ProjectDto?> GetProjectByIdAsync(int id)
+        {
+            var projects = await GetAllProjectsWithClientsAsync(); // await properly
+            var project = projects.FirstOrDefault(x => x.Id == id); // get single value or null
+            return project;
+        }
+    }
 }
