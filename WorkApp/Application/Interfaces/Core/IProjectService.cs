@@ -9,9 +9,10 @@
   using System.Threading.Tasks;
 
   public interface IProjectService
-  {
-    Task<IEnumerable<ProjectDto>> GetAllProjectsWithClientsAsync();
-    Task<GeneralServiceResponseDto> CreateProjectAsync(CreateProjectDto projectDto);
+    {
+        Task<IEnumerable<ProjectDto>> GetAllProjectsWithClientsAsync();
+        Task<ProjectDto?> GetProjectByIdAsync(int id);
+        Task<GeneralServiceResponseDto> CreateProjectAsync(CreateProjectDto projectDto);
     Task<GeneralServiceResponseDto> UpdateProjectAsync(CreateProjectDto projectDto);
   }
 }
