@@ -20,12 +20,14 @@
   {
     private readonly DataContext dataContext;
     private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserJobTitleService jobTitleService;
 
-    public TeamService(DataContext dataContext, UserManager<ApplicationUser> userManager)
+        public TeamService(DataContext dataContext, UserManager<ApplicationUser> userManager,IUserJobTitleService jobTitleService)
     {
       this.dataContext = dataContext; 
       this.userManager = userManager;
-    }
+            this.jobTitleService = jobTitleService;
+        }
 
     public async Task<GeneralServiceResponseDto> UpdateTeamMembership(string username, int? teamId = null)
     {
@@ -37,15 +39,20 @@
         if (assignee == null)
         {
           return ResponseHelper.CreateResponse(false, 400, "Username not found.");
-        }
-        // Check if the user is already a member of the specified team
-        if (teamId.HasValue && await IsUserInTeam(username, teamId.Value))
-        {
-          return ResponseHelper.CreateResponse(false, 400, "User is already a member of the specified team.");
-        }
+                }
+                // Check if the user is already a member of the specified team
+                if (!teamId.HasValue && await IsUserInTeam(username, teamId.Value))
+                {
+                    return ResponseHelper.CreateResponse(false, 400, "User is not a member of the specified team.");
+                }
+                // Check if the user is already a member of the specified team
+                if (teamId.HasValue && await IsUserInTeam(username, teamId.Value))
+                {
+                    return ResponseHelper.CreateResponse(false, 400, "User is already a member of the specified team.");
+                }
 
-        // Check if the user is already a member of 3 teams
-        if (teamId.HasValue && await IsUserInMaxTeams(username))
+                // Check if the user is already a member of 3 teams
+                if (teamId.HasValue && await IsUserInMaxTeams(username))
         {
           return ResponseHelper.CreateResponse(false, 400, "User is already a member of the maximum allowed 3 teams.");
         }
@@ -134,7 +141,7 @@
       try
       {
         // Check if a team with the same name already exists
-        var existingTeam = dataContext.Teams.FirstOrDefault(t => t.TeamName == teamDto.TeamName);
+        var existingTeam = await dataContext.Teams.AsNoTracking().FirstOrDefaultAsync(t => t.TeamName == teamDto.TeamName);
 
         if (existingTeam != null)
         {
@@ -149,7 +156,7 @@
           return ResponseHelper.CreateResponse(false, 400, "User Name not found or invalid.");
         }
 
-        if (!await IsUserManager(teamDto.TeamLeader))
+        if (await IsUserManager(teamDto.TeamLeader))
         {
           return ResponseHelper.CreateResponse(false, 403, "The assigned user does not qualify to be team leader");
         }
@@ -157,11 +164,14 @@
         // Check if the user is already a team leader of another team
         if (await IsUserTeamLeaderInAnyTeam(teamDto.TeamLeader))
         {
-          return ResponseHelper.CreateResponse(false, 400, "User is already a team leader of another team.");
         }
+        if(!await IsLeaderInDepartment(teamDto.TeamLeader, teamDto.DepartmentId))
+                {
+                    return ResponseHelper.CreateResponse(false, 400, "Team Leader is not in the same department.");
 
-        // Create a new team entity and populate it with data from the DTO
-        var newTeam = new Team
+                }
+                        // Create a new team entity and populate it with data from the DTO
+                        var newTeam = new Team
         {
           TeamName = teamDto.TeamName,
           TeamLeader = teamDto.TeamLeader,
@@ -211,7 +221,7 @@
         return ResponseHelper.CreateResponse(false, 500, $"An error occurred: {ex.Message}");
       }
     }
-
+        
     private async Task<bool> IsUserManager(string username)
     {
       try
@@ -287,12 +297,30 @@
       return teamLeaderCount > 0;
     }
 
-    private async Task<bool> IsUserInTeam(string username, int teamId)
-    {
-      return await dataContext.UserTeams.AnyAsync(u => u.UserId == username && u.TeamId == teamId);
-    }
+        private async Task<bool> IsUserInTeam(string username, int teamId)
+        {
+            return await dataContext.UserTeams.AnyAsync(u => u.UserId == username && u.TeamId == teamId);
+        }
 
-    private async Task<string> GetUserIdAsync(string userName)
+        // we get the user department to see they are eligeble to be assigne team learder
+        private async Task<bool> IsLeaderInDepartment(string username, int departmentId)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null) return false;
+
+            var jobtitleinfo = await jobTitleService.GetJobTitleForUser(username);
+            if (jobtitleinfo == null) return false;
+
+            var department = await dataContext.Departments
+                .FirstOrDefaultAsync(x => x.DepartmentName == jobtitleinfo.DepartmentName);
+
+            if (department == null) return false;
+
+            return department.Id == departmentId;
+        }
+
+
+        private async Task<string> GetUserIdAsync(string userName)
     {
       // Attempt to find the user by email
       var user = await userManager.FindByNameAsync(userName);

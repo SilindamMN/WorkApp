@@ -7,9 +7,11 @@
   using System.Text;
   using System.Threading.Tasks;
 
-  public class TeamDto
-  {
+  public class 
+        TeamDto
+    {
         public int Id { get; set; }
+        public int DepartmentId { get; set; }
         public string TeamName { get; set; }
     public string TeamLeader { get; set; }
     public string Description { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Application.Services.GenericServices
+﻿ namespace Application.Services.GenericServices
 {
   using Application.Interfaces.GenericInterfaces;
   using Domain.Dtos.GeneralAdmin;

@@ -52,7 +52,7 @@
     }
 
     [HttpPost]
-        [Authorize( StaticUserRoles.ADMIN)]
+        //[Authorize(Roles = StaticUserRoles.USER)]
         public async Task<IActionResult> CreateTeam([FromBody] TeamDto teamDto)
     {
       var result = await teamInterface.CreateTeam(teamDto);
