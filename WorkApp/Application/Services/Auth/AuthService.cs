@@ -1,5 +1,12 @@
 ﻿namespace Application.Services.Auth
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
     using Application.Helpers;
     using Application.Interfaces;
     using Application.Interfaces.Auth;
@@ -8,18 +15,12 @@
     using Domain.Constants;
     using Domain.Dtos.Account;
     using Domain.Dtos.General;
+    using Domain.Enties.TimeSheets;
     using Domain.Enums;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
-    using System;
-    using System.Collections.Generic;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class AuthService : IAuthService
     {
@@ -268,6 +269,12 @@
             IUserJobTitleService userJobTitleService)
         {
             var details = await userJobTitleService.GetJobTitleForUser(user.UserName);
+            var userTeam = (from userteam in dataContext.UserTeams
+                            join team in dataContext.Teams
+                            on userteam.TeamId equals team.Id
+                            where userteam.UserId == user.Id
+                            select team.TeamName)
+                .FirstOrDefault();
 
             return new UserDetailsDto
             {
@@ -283,7 +290,8 @@
                 Department = details.DepartmentName,
                 JobTitle = details?.Title ?? "Not Assigned",
                 PhoneNumber = user?.PhoneNumber,
-                Gender = user.Gender
+                Gender = user.Gender,
+                Team = userTeam.ToString()
             };
         }
 
