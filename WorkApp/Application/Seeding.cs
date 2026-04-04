@@ -143,6 +143,7 @@
               CreatedAt = DateTime.Now,
               UpdatedAt = DateTime.Now,
               IsActive = true,
+              DepartmentId  = i,
               IsDeleted = false
             }
         );

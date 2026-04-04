@@ -1,5 +1,11 @@
 ﻿namespace Application.Services.Core
 {
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Security.Claims;
+  using System.Text;
+  using System.Threading.Tasks;
   using Application.Helpers;
   using Application.Interfaces;
   using Application.Interfaces.Auth;
@@ -10,22 +16,19 @@
   using Domain.Dtos.JobTitles;
   using Domain.Enties;
   using Domain.Enums;
-  using Microsoft.EntityFrameworkCore;
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Security.Claims;
-  using System.Text;
-  using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
 
   public class UserJobTitleService : IUserJobTitleService
   {
     private readonly DataContext dataContext;
+        private readonly UserManager<ApplicationUser> userManager;
 
-    public UserJobTitleService(DataContext dataContext)
+        public UserJobTitleService(DataContext dataContext, UserManager<ApplicationUser> userManager)
     {
       this.dataContext = dataContext;
-    }
+            this.userManager = userManager;
+        }
 
     public async Task<GeneralServiceResponseDto> AssignJobTitleToUser(AssignJobTitleDto assignJobTitle)
     {
@@ -41,24 +44,24 @@
       throw new NotImplementedException();
     }
 
-        public async Task<JobTitleDto?> GetJobTitleForUser(string username)
+        public async Task<JobTitleDto?> GetJobTitleForUser(string userName)
         {
-            var user = await dataContext.Users.SingleAsync(u => u.UserName == username);
+            // Use UserManager instead of direct DbContext query
+            var user = await userManager.FindByNameAsync(userName);
 
-            if (user.JobTitleId.HasValue)
+            if (user == null || user.JobTitleId == null)
             {
-                return await GetJobTitleInfo(user.JobTitleId.Value);
+                return null;
             }
-
-            // No job title assigned
-            return null;
+            var val = await GetJobTitleInfo(user.JobTitleId.Value);
+            return val;
         }
 
 
         //will get the jobTitle including department name
         private async Task<JobTitleDto> GetJobTitleInfo(int jobTitleId)
     {
-      return await (from jobTitle in dataContext.JobTitles
+      var departmenta = await (from jobTitle in dataContext.JobTitles
                     join department in dataContext.Departments on jobTitle.DepartmentId equals department.Id
                     where jobTitle.Id == jobTitleId
                     select new JobTitleDto
@@ -68,6 +71,7 @@
                       DepartmentName = department.DepartmentName,
                       Seniority = jobTitle.Seniority.ToString() // Assuming Seniority is an enum
                     }).FirstOrDefaultAsync();
+            return departmenta;
     }
 
     public async Task<IEnumerable<JobTitleDto>> GetJobTitles()

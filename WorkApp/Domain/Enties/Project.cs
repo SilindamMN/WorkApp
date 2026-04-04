@@ -20,6 +20,9 @@ namespace Domain.Enties
     public DateTime EndDate { get; set; }
     public virtual Client Client { get; set; }
     public virtual Team Team { get; set; }
-    public ICollection<TimesheetEntry> TimesheetEntries { get; set; } 
-  }
+        public ICollection<TimesheetEntry> TimesheetEntries { get; set; }
+        public int? DepartmentId { get; set; }
+        public virtual Department Department { get; set; }
+
+    }
 }
