@@ -291,7 +291,7 @@
                 JobTitle = details?.Title ?? "Not Assigned",
                 PhoneNumber = user?.PhoneNumber,
                 Gender = user.Gender,
-                Team = userTeam.ToString()
+                Team = userTeam?.ToString()
             };
         }
 
