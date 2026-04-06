@@ -104,14 +104,12 @@
                                       join u in dataContext.Users on ut.UserId equals u.Id
                                       join t in dataContext.Teams on ut.TeamId equals t.Id
                                       join jt in dataContext.JobTitles on u.JobTitleId equals jt.Id into jobTitles
-                                      join pr in dataContext.Projects on t.Id equals pr.TeamId
                                       from jt in dataContext.JobTitles.DefaultIfEmpty()
                                       select new
                                       {
                                         Id = t.Id,
                                         TeamName = t.TeamName,
                                         TeamLeader = t.TeamLeader,
-                                        Project = pr.ProjectName,
                                         Member = new MemberDetails
                                         {
                                           FirstName = u.FirstName,
